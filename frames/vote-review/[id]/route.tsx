@@ -15,6 +15,7 @@ export const POST = async (req: NextRequest, { params }: Props) => {
   return frames(async (ctx) => {
     const back = ctx.searchParams.back;
     console.log("ctx.message:", ctx.message);
+    // console.log("ctx.reviews:", ctx.reviews);
 
     const { id } = params;
 
@@ -28,6 +29,8 @@ export const POST = async (req: NextRequest, { params }: Props) => {
       body: JSON.stringify({ reviewId: Number(id), vote: vote, payload: ctx.message }),
     });
     console.log("res ok?", res.ok);
+
+    console.log("res json:", await res.json());
 
     if (res.ok) {
       return {
