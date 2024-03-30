@@ -17,7 +17,19 @@ const reviewsMiddleware: types.FramesMiddleware<any, { reviews: any[] }> = async
   }
 };
 
+// This middleware is used to update the currentReviewIndex value in the context and making it accessible across routes.
+export const updateReviewIndexMiddleware: types.FramesMiddleware<any, any> = async (ctx, next) => {
+  let currentReviewIndex = ctx.currentReviewIndex ?? 0;
+
+  const updatedCtx = {
+    ...ctx,
+    currentReviewIndex,
+  };
+
+  return next(updatedCtx);
+};
+
 export const frames = createFrames({
   basePath: "/frames",
-  middleware: [reviewsMiddleware, farcasterHubContext()],
+  middleware: [reviewsMiddleware, farcasterHubContext(), updateReviewIndexMiddleware],
 });

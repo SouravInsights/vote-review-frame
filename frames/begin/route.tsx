@@ -1,7 +1,6 @@
 import { Button, FrameDefinition, types } from "frames.js/next";
 import { Heading } from "@/components/frames/heading";
 import { frames } from "../frames";
-//import { handleManageImpl } from "../manage/handleManageImpl";
 import { imageUrl } from "@/utils/utils";
 
 export const POST = frames(async (ctx: FrameDefinition) => {
@@ -9,13 +8,13 @@ export const POST = frames(async (ctx: FrameDefinition) => {
     throw new Error("No message");
   }
 
-  //console.log("ctx reviews from begin route:", ctx.reviews[0]);
-  //console.log("traget url:", `/reviews/[${ctx.reviews[0].id}]`);
-
   const back = ctx.searchParams.back;
 
-  const addresses = ctx.message.requesterVerifiedAddresses;
-  // console.log("addresses:", addresses);
+  console.log("ctx.reviews:", ctx.reviews);
+
+  console.log("currentReviewIndex in begin route:", ctx.currentReviewIndex);
+  const startButtonTarget = `/reviews/${ctx.reviews[ctx.currentReviewIndex].id}`;
+  console.log("startButtonTarget:", startButtonTarget);
 
   if (ctx.reviews.length === 0) {
     return {
@@ -40,7 +39,7 @@ export const POST = frames(async (ctx: FrameDefinition) => {
         ← Back
       </Button>,
 
-      <Button key={2} action="post" target={`/reviews/${ctx.reviews[0].id}`}>
+      <Button key={2} action="post" target={startButtonTarget}>
         Start
       </Button>,
     ] as [any, any],

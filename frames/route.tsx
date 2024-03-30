@@ -4,8 +4,6 @@ import { frames } from "./frames";
 import { Heading } from "@/components/frames/heading";
 
 const handler = frames(async (ctx) => {
-  //console.log("frames:", frames);
-  //console.log("ctx.reviews from main route:", ctx.reviews);
   return {
     image: imageUrl(
       <div tw="flex flex-col">
