@@ -40,7 +40,7 @@ export const POST = frames(async (ctx: FrameDefinition) => {
       </Button>,
 
       <Button key={2} action="post" target={startButtonTarget}>
-        Start
+        Begin
       </Button>,
     ] as [any, any],
   };
