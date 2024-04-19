@@ -1,14 +1,11 @@
-import { ImageResponse } from "@vercel/og";
 import { NextRequest } from "next/server";
 import { deserializeJsx } from "../renderImage";
+import { jsxToImageResponse, loadFonts } from "./images";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 export async function GET(req: NextRequest) {
-  const [regularFont, boldFont] = await Promise.all([
-    fetch(new URL("/public/Satoshi-Regular.ttf", import.meta.url)).then((res) => res.arrayBuffer()),
-    fetch(new URL("/public/Satoshi-Bold.ttf", import.meta.url)).then((res) => res.arrayBuffer()),
-  ]);
+  const fonts = await loadFonts();
 
   const serialized = req.nextUrl.searchParams.get("jsx");
 
@@ -18,20 +15,7 @@ export async function GET(req: NextRequest) {
 
   const jsx = deserializeJsx(JSON.parse(serialized!));
 
-  return new ImageResponse(jsx, {
-    width: 1146,
-    height: 600,
-    fonts: [
-      {
-        name: "Satoshi",
-        data: regularFont,
-        weight: 400,
-      },
-      {
-        name: "Satoshi",
-        data: boldFont,
-        weight: 700,
-      },
-    ],
-  });
+  const response = jsxToImageResponse({ jsx, fonts });
+
+  return response;
 }
