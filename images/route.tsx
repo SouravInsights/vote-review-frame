@@ -1,21 +1,7 @@
-import { NextRequest } from "next/server";
-import { deserializeJsx } from "../renderImage";
-import { jsxToImageResponse, loadFonts } from "./images";
+import { createImagesWorker } from "frames.js/middleware/images-worker/next";
 
-export const runtime = "nodejs";
+const imagesRoute = createImagesWorker({
+  secret: "SUPER_SECRET_VALUE",
+});
 
-export async function GET(req: NextRequest) {
-  const fonts = await loadFonts();
-
-  const serialized = req.nextUrl.searchParams.get("jsx");
-
-  if (!serialized) {
-    throw new Error("No jsx");
-  }
-
-  const jsx = deserializeJsx(JSON.parse(serialized!));
-
-  const response = jsxToImageResponse({ jsx, fonts });
-
-  return response;
-}
+export const GET = imagesRoute();

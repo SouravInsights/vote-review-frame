@@ -3,7 +3,6 @@ import { NextRequest } from "next/server";
 import { frames } from "../../frames";
 import { Button } from "frames.js/next";
 import { Heading } from "@/components/frames/heading";
-import { imageUrl } from "@/utils/utils";
 import { API_URL } from "@/config/constants";
 
 type Props = {

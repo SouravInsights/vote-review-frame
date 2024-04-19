@@ -4,12 +4,9 @@ import fs from "fs";
 import path from "path";
 import { frames } from "../../frames";
 import { Button } from "frames.js/next";
-import { imageUrl } from "@/utils/utils";
 import { Typography } from "@/components/ui/typography";
 import StarsRating from "@/components/stars-rating";
-import DisplayText from "@/components/display-text";
 import { formatReviewDate } from "@/utils/formatting";
-import { twMerge } from "tailwind-merge";
 import { API_URL } from "@/config/constants";
 
 const frameHandler = async (
@@ -17,13 +14,6 @@ const frameHandler = async (
   { params: { id: reviewId } }: { params: { id: number } }
 ) => {
   return await frames(async (ctx) => {
-    // console.log("latest ctx:", ctx);
-    // console.log("value of API_URL:", API_URL);
-
-    // const lastIndex = ctx.url.pathname.lastIndexOf("/");
-    // const reviewId = ctx.url.pathname.substring(lastIndex + 1);
-    // console.log("reviewId:", reviewId);
-
     const response = await fetch(`${API_URL}/reviews/single-review?reviewId=${reviewId}`);
     console.log("response:", response);
 
@@ -47,7 +37,7 @@ const frameHandler = async (
     console.log("trippyIconUrl:", trippyIconUrl);
 
     return {
-      image: imageUrl(
+      image: (
         <div tw="flex flex-col bg-[#FFFFFF] ">
           <div tw="w-full grid grid-cols-2 gap-5 center-center border-b-4 border-black bg-[#71D4F4]">
             <div tw="w-[auto] items-center justify-center gap-5 self-stretch rounded-tl-lg ">
