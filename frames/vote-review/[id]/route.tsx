@@ -4,6 +4,7 @@ import { frames } from "../../frames";
 import { Button } from "frames.js/next";
 import { Heading } from "@/components/frames/heading";
 import { imageUrl } from "@/utils/utils";
+import { API_URL } from "@/config/constants";
 
 type Props = {
   params: {
@@ -13,12 +14,19 @@ type Props = {
 
 export const POST = async (req: NextRequest, { params }: Props) => {
   return frames(async (ctx) => {
+    console.log("vote review endpoint is called");
     const { id } = params;
+    console.log("id:", id);
+
+    console.log("ctx message:", ctx.message);
 
     const vote = ctx.message?.buttonIndex === 1 ? "Up" : "Down";
-    const votingStatus = vote === "Up" ? "Upvoted" : "Downvoted";
+    console.log("vote:", vote);
 
-    const res = await fetch("http://localhost:3001/vote-review/farcaster", {
+    const votingStatus = vote === "Up" ? "Upvoted" : "Downvoted";
+    console.log("votingStatus:", votingStatus);
+
+    const res = await fetch(`${API_URL}/vote-review/farcaster`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -26,9 +34,12 @@ export const POST = async (req: NextRequest, { params }: Props) => {
       body: JSON.stringify({ reviewId: Number(id), vote: vote, payload: ctx.message }),
     });
 
+    console.log("res from vote-review route:", res);
+
     if (res.ok) {
+      console.log("res.ok block is executed");
       return {
-        image: imageUrl(
+        image: (
           <div tw="flex flex-col">
             <Heading>{`You have successfully ${votingStatus} for the review ID ${id}`}</Heading>
           </div>
@@ -40,8 +51,9 @@ export const POST = async (req: NextRequest, { params }: Props) => {
         ] as [any],
       };
     } else {
+      console.log("else block is executed");
       return {
-        image: imageUrl(
+        image: (
           <div tw="flex flex-col">
             <Heading>{`Voting for the review ID ${id} is unsuccesful!`}</Heading>
           </div>
